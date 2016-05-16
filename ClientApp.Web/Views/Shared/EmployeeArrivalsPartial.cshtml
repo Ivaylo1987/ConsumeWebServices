@@ -1,0 +1,28 @@
+﻿@using ClientApp.ViewModels
+@model IEnumerable<EmployeeArrivalViewModel>
+
+<div class="panel panel-default">
+
+    <div class="panel-body">
+        <div class="row">
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Employee Id</th>
+                        <th>When</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var entry in Model)
+                    {
+                        <tr>
+                            <td>@entry.EmployeeId</td>
+                            <td>@entry.When</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

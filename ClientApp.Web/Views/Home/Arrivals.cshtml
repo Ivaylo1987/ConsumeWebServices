@@ -1,0 +1,62 @@
+﻿@using ClientApp.ViewModels
+@model IEnumerable<EmployeeArrivalViewModel>
+
+<div class="jumbotron">
+    <h1>Employee Arrivals</h1>
+    <br />
+    @{
+        <div class="row" id="container">
+            @Html.Partial("EmployeeArrivalsPartial", Model)
+        </div>
+
+        var nextPage = ViewBag.page + 1;
+        var prevPage = ViewBag.page - 1;
+        prevPage = prevPage < 0 ? 0 : prevPage;
+
+        @Ajax.ActionLink("Next", "ArrivalsData", "Home", new { page = nextPage },
+            new AjaxOptions
+            {
+                UpdateTargetId = "container",
+                HttpMethod = "GET",
+                InsertionMode = InsertionMode.Replace,
+            }, new { @class = "btn btn-primary next pull-right" })
+
+        @Ajax.ActionLink("Previous", "ArrivalsData", "Home", new { page = prevPage },
+            new AjaxOptions
+            {
+                UpdateTargetId = "container",
+                HttpMethod = "GET",
+                InsertionMode = InsertionMode.Replace,
+            }, new { @class = "btn btn-primary previous pull-left" })
+    }
+
+</div>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            $('.next').on('click', function () {
+                var url = $(this).attr('href').split('page=')[0];
+                var pageNumber = $(this).attr('href').split('page=')[1];
+                var nextPage = parseInt(pageNumber) + 1;
+                var nextPageLink = url + 'page=' + nextPage;
+
+                $('.previous').attr('href', $(this).attr('href'));
+                $(this).attr('href', nextPageLink);
+            })
+
+            $('.previous').on('click', function () {
+                var url = $(this).attr('href').split('page=')[0];
+                var pageNumber = $(this).attr('href').split('page=')[1];
+                var nextPage = parseInt(pageNumber) - 1;
+
+                if (nextPage > 0 ) {
+                    var nextPageLink = url + 'page=' + nextPage;
+                    $('.next').attr('href', $(this).attr('href'));
+                    $(this).attr('href', nextPageLink);
+                }
+            })
+        });
+    </script>
+}
