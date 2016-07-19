@@ -65,6 +65,11 @@
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Subscribe(SubscribeModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             var webServiceUri = ConfigurationManager.AppSettings["WebServiceUri"];
             var clientCallBackUri = ConfigurationManager.AppSettings["ClientCallBackUri"];
 
